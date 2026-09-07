@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C Programming Concepts - Loops</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Mono&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-twilight.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --dark-gray: #1a1a1a;
+            --primary-orange: #eb5e34;
+            --light-gray: #e9ecef;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--dark-gray);
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation Bar */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: var(--dark-gray);
+            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 0 20px;
+            max-width: 1200px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-family: 'Syncopate', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: var(--primary-orange);
+            color: var(--dark-gray);
+        }
+
+        /* Header Section */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at center, #ffffff 0%, #e9ecef 100%);
+            padding: 20px;
+        }
+
+        header h1 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 4vw;
+            color: var(--dark-gray);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        header h2 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 2vw;
+            color: var(--primary-orange);
+            margin-top: 20px;
+            font-weight: 400;
+        }
+
+        .scroll-down {
+            margin-top: 50px;
+            font-size: 24px;
+            color: var(--primary-orange);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        /* Main Content Grid */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        
+        /* Section Dividers */
+        .section-divider {
+            text-align: center;
+            margin: 20px 0 60px 0;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--primary-orange);
+        }
+        
+        .section-divider h2 {
+            font-family: 'Syncopate', sans-serif;
+            color: var(--dark-gray);
+            margin: 0 0 10px 0;
+            font-size: 32px;
+        }
+        
+        .section-divider p {
+            font-family: 'Space Mono', monospace;
+            color: var(--primary-orange);
+            font-size: 18px;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .mcq-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 60px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            scroll-margin-top: 80px; /* Offset for sticky nav */
+        }
+
+        .mcq-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .mcq-header h2 {
+            font-family: 'Syncopate', sans-serif;
+            margin: 0;
+            font-size: 24px;
+            color: var(--dark-gray);
+        }
+
+        .badge-orange {
+            background-color: var(--primary-orange);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-family: 'Syncopate', sans-serif;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .content-grid { grid-template-columns: 1fr; }
+            header h1 { font-size: 8vw; }
+            header h2 { font-size: 4vw; }
+        }
+
+        .code-container {
+            background: var(--dark-gray);
+            border-radius: 10px;
+            padding: 20px;
+            overflow-x: auto;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+        }
+
+        .code-container pre { margin: 0; }
+        .code-container code { font-family: 'Space Mono', monospace; font-size: 16px; }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .option-item {
+            background: var(--light-gray);
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-family: 'Space Mono', monospace;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .option-item:hover {
+            transform: translateX(10px);
+            background: #dfe4ea;
+        }
+
+        .option-letter {
+            background: var(--primary-orange);
+            color: var(--dark-gray);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+
+        /* Explanation Dynamic Section */
+        .btn-reveal {
+            background: var(--dark-gray);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-family: 'Syncopate', sans-serif;
+            font-weight: bold;
+            font-size: 14px;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-reveal:hover {
+            background: var(--primary-orange);
+        }
+
+        .explanation-box {
+            display: none;
+            background: #fff3ed;
+            border-left: 5px solid var(--primary-orange);
+            padding: 30px;
+            margin-top: 20px;
+            border-radius: 0 10px 10px 0;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .explanation-box.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .exp-answer {
+            color: var(--primary-orange);
+            font-family: 'Syncopate', sans-serif;
+            font-size: 20px;
+            margin-bottom: 15px;
+            margin-top: 0;
+        }
+
+        .exp-text {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .exp-text code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Space Mono', monospace;
+            color: #d35400;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="nav-links">
+            <a href="#home">HOME</a>
+<a href="#q1">Q1</a>
+<a href="#q2">Q2</a>
+<a href="#q3">Q3</a>
+<a href="#q4">Q4</a>
+<a href="#q5">Q5</a>
+<a href="#q6">Q6</a>
+<a href="#q7">Q7</a>
+<a href="#q8">Q8</a>
+<a href="#q9">Q9</a>
+<a href="#q10">Q10</a>
+
+        </div>
+    </nav>
+
+    <!-- Header / Hero Section -->
+    <header id="home">
+        <h1>C-PROGRAMMING CONCEPTS</h1>
+        <h2>WHILE LOOP AND DO-WHILE LOOP</h2>
+        <div class="scroll-down">▼</div>
+    </header>
+
+    <div class="container">
+
+        <!-- Divider for While Loop -->
+        <div class="section-divider">
+            <h2>WHILE LOOP MCQs</h2>
+            <p>Q1 to Q5</p>
+        </div>
+
+        <!-- Question 1 Section -->
+        <div id="q1" class="mcq-section">
+            <div class="mcq-header">
+                <div class="badge-orange">Q1</div>
+                <h2>WHAT IS THE OUTPUT?</h2>
+            </div>
+            
+            <div class="content-grid">
+                <div class="code-container">
+                    <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    int i = 1;
+
+    while (i++ &lt;= 3)
+        printf("%d ", i);
+
+    return 0;
+}</code></pre>
+                </div>
+                
+                <div class="options-container">
+
+                    <div class="option-item">
+                        <div class="option-letter">A</div>
+                        1 2 3
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">B</div>
+                        2 3 4
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">C</div>
+                        2 3 4 5
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">D</div>
+                        1 2 3 4
+                    </div>
+
+                </div>
+            </div>
+            
+            <button class="btn-reveal" onclick="toggleExplanation('exp_q1')">SHOW ANSWER & EXPLANATION</button>
+            
+            <div id="exp_q1" class="explanation-box">
+                <h3 class="exp-answer">CORRECT ANSWER: B) 2 3 4</h3>
+                <div class="exp-text">
+                    The important trick is that <code>i++</code> is post-increment.<br><br>Initially <code>i = 1</code><br>Condition checks <code>1 <= 3</code> &rarr; true, then <code>i</code> becomes 2. Prints <strong>2</strong>.<br>Condition checks <code>2 <= 3</code> &rarr; true, then <code>i</code> becomes 3. Prints <strong>3</strong>.<br>Condition checks <code>3 <= 3</code> &rarr; true, then <code>i</code> becomes 4. Prints <strong>4</strong>.<br>Condition checks <code>4 <= 3</code> &rarr; false.<br><br>Therefore: <strong>2 3 4</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 2 Section -->
+        <div id="q2" class="mcq-section">
+            <div class="mcq-header">
+                <div class="badge-orange">Q2</div>
+                <h2>WHAT IS THE OUTPUT?</h2>
+            </div>
+            
+            <div class="content-grid">
+                <div class="code-container">
+                    <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    int i = 0;
+
+    while (i &lt; 5) {
+        printf("%d ", i);
+        i += 2;
+    }
+
+    return 0;
+}</code></pre>
+                </div>
+                
+                <div class="options-container">
+
+                    <div class="option-item">
+                        <div class="option-letter">A</div>
+                        0 2 4
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">B</div>
+                        0 2 4 6
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">C</div>
+                        1 3 5
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">D</div>
+                        0 1 2 3 4
+                    </div>
+
+                </div>
+            </div>
+            
+            <button class="btn-reveal" onclick="toggleExplanation('exp_q2')">SHOW ANSWER & EXPLANATION</button>
+            
+            <div id="exp_q2" class="explanation-box">
+                <h3 class="exp-answer">CORRECT ANSWER: A) 0 2 4</h3>
+                <div class="exp-text">
+                    The loop condition is: <code>i < 5</code><br><br>Iteration 1: 0 < 5 (True) &rarr; Prints 0, i becomes 2.<br>Iteration 2: 2 < 5 (True) &rarr; Prints 2, i becomes 4.<br>Iteration 3: 4 < 5 (True) &rarr; Prints 4, i becomes 6.<br>Iteration 4: 6 < 5 (False).<br><br>The common mistake is to include 6, but 6 is never printed because the condition fails before the fourth iteration.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 3 Section -->
+        <div id="q3" class="mcq-section">
+            <div class="mcq-header">
+                <div class="badge-orange">Q3</div>
+                <h2>WHAT IS THE OUTPUT?</h2>
+            </div>
+            
+            <div class="content-grid">
+                <div class="code-container">
+                    <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    int i = 5;
+
+    while (i-- &gt; 2)
+        printf("%d ", i);
+
+    return 0;
+}</code></pre>
+                </div>
+                
+                <div class="options-container">
+
+                    <div class="option-item">
+                        <div class="option-letter">A</div>
+                        5 4 3
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">B</div>
+                        4 3 2
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">C</div>
+                        4 3
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">D</div>
+                        5 4 3 2
+                    </div>
+
+                </div>
+            </div>
+            
+            <button class="btn-reveal" onclick="toggleExplanation('exp_q3')">SHOW ANSWER & EXPLANATION</button>
+            
+            <div id="exp_q3" class="explanation-box">
+                <h3 class="exp-answer">CORRECT ANSWER: B) 4 3 2</h3>
+                <div class="exp-text">
+                    Again, <code>i--</code> is post-decrement. The old value is used for comparison, and then <code>i</code> is decreased.<br><br>First: 5 > 2 (true) &rarr; <code>i</code> becomes 4, prints <strong>4</strong>.<br>Second: 4 > 2 (true) &rarr; <code>i</code> becomes 3, prints <strong>3</strong>.<br>Third: 3 > 2 (true) &rarr; <code>i</code> becomes 2, prints <strong>2</strong>.<br>Fourth: 2 > 2 (false).<br><br>The tricky point is that 2 is printed, even though the condition is > 2. The comparison uses the old value 3.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 4 Section -->
+        <div id="q4" class="mcq-section">
+            <div class="mcq-header">
+                <div class="badge-orange">Q4</div>
+                <h2>WHAT IS THE OUTPUT?</h2>
+            </div>
+            
+            <div class="content-grid">
+                <div class="code-container">
+                    <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    int i = 1, sum = 0;
+
+    while (i &lt;= 5) {
+        if (i % 2 == 0)
+            sum += i;
+        i++;
+    }
+
+    printf("%d", sum);
+
+    return 0;
+}</code></pre>
+                </div>
+                
+                <div class="options-container">
+
+                    <div class="option-item">
+                        <div class="option-letter">A</div>
+                        6
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">B</div>
+                        9
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">C</div>
+                        15
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">D</div>
+                        10
+                    </div>
+
+                </div>
+            </div>
+            
+            <button class="btn-reveal" onclick="toggleExplanation('exp_q4')">SHOW ANSWER & EXPLANATION</button>
+            
+            <div id="exp_q4" class="explanation-box">
+                <h3 class="exp-answer">CORRECT ANSWER: A) 6</h3>
+                <div class="exp-text">
+                    The loop processes: 1, 2, 3, 4, 5.<br><br>Only even numbers satisfy <code>i % 2 == 0</code>. (i.e., 2 and 4).<br><br>So: <code>2 + 4 = 6</code>.<br><br>A common mistake is to calculate the sum of all numbers (15) instead of noticing that only even numbers are added.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 5 Section -->
+        <div id="q5" class="mcq-section">
+            <div class="mcq-header">
+                <div class="badge-orange">Q5</div>
+                <h2>WHAT IS THE OUTPUT?</h2>
+            </div>
+            
+            <div class="content-grid">
+                <div class="code-container">
+                    <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    int i = 1;
+
+    while (i &lt;= 3) {
+        printf("%d ", i);
+
+        if (i == 2)
+            i += 2;
+        else
+            i++;
+    }
+
+    return 0;
+}</code></pre>
+                </div>
+                
+                <div class="options-container">
+
+                    <div class="option-item">
+                        <div class="option-letter">A</div>
+                        1 2 3
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">B</div>
+                        1 2 4
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">C</div>
+                        1 2
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">D</div>
+                        1 3
+                    </div>
+
+                </div>
+            </div>
+            
+            <button class="btn-reveal" onclick="toggleExplanation('exp_q5')">SHOW ANSWER & EXPLANATION</button>
+            
+            <div id="exp_q5" class="explanation-box">
+                <h3 class="exp-answer">CORRECT ANSWER: C) 1 2</h3>
+                <div class="exp-text">
+                    Iteration 1: 1 <= 3 &rarr; true. Prints <strong>1</strong>. <code>i</code> is not 2, so <code>i++</code>. Now <code>i = 2</code>.<br>Iteration 2: 2 <= 3 &rarr; true. Prints <strong>2</strong>. <code>i == 2</code> is true, so <code>i += 2</code>. Now <code>i = 4</code>.<br>Iteration 3: 4 <= 3 is false, so the loop stops.<br><br>The trick is that <code>i</code> jumps from 2 directly to 4, skipping 3.
+                </div>
+            </div>
+        </div>
+
+        <!-- Divider for Do-While Loop -->
+        <div class="section-divider">
+            <h2>DO - WHILE LOOP MCQs</h2>
+            <p>Q6 to Q10</p>
+        </div>
+
+        <!-- Question 6 Section -->
+        <div id="q6" class="mcq-section">
+            <div class="mcq-header">
+                <div class="badge-orange">Q6</div>
+                <h2>WHAT IS THE OUTPUT?</h2>
+            </div>
+            
+            <div class="content-grid">
+                <div class="code-container">
+                    <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    int i = 5;
+
+    do {
+        printf("%d ", i);
+        i++;
+    } while (i &lt; 5);
+
+    return 0;
+}</code></pre>
+                </div>
+                
+                <div class="options-container">
+
+                    <div class="option-item">
+                        <div class="option-letter">A</div>
+                        No output
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">B</div>
+                        5
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">C</div>
+                        5 6
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">D</div>
+                        4 5
+                    </div>
+
+                </div>
+            </div>
+            
+            <button class="btn-reveal" onclick="toggleExplanation('exp_q6')">SHOW ANSWER & EXPLANATION</button>
+            
+            <div id="exp_q6" class="explanation-box">
+                <h3 class="exp-answer">CORRECT ANSWER: B) 5</h3>
+                <div class="exp-text">
+                    The most important property of a <code>do-while</code> loop is that its body executes at least once.<br><br>Initially: <code>i = 5</code>.<br>The body executes first: Prints <strong>5</strong>. Then <code>i++</code> makes <code>i = 6</code>.<br>Now the condition is checked: <code>6 < 5</code> which is false.<br><br>Therefore, 5 is printed.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 7 Section -->
+        <div id="q7" class="mcq-section">
+            <div class="mcq-header">
+                <div class="badge-orange">Q7</div>
+                <h2>WHAT IS THE OUTPUT?</h2>
+            </div>
+            
+            <div class="content-grid">
+                <div class="code-container">
+                    <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    int i = 1;
+
+    do {
+        printf("%d ", i);
+        i *= 2;
+    } while (i &lt;= 8);
+
+    return 0;
+}</code></pre>
+                </div>
+                
+                <div class="options-container">
+
+                    <div class="option-item">
+                        <div class="option-letter">A</div>
+                        1 2 4 8
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">B</div>
+                        1 2 4 8 16
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">C</div>
+                        2 4 8 16
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">D</div>
+                        1 2 4
+                    </div>
+
+                </div>
+            </div>
+            
+            <button class="btn-reveal" onclick="toggleExplanation('exp_q7')">SHOW ANSWER & EXPLANATION</button>
+            
+            <div id="exp_q7" class="explanation-box">
+                <h3 class="exp-answer">CORRECT ANSWER: A) 1 2 4 8</h3>
+                <div class="exp-text">
+                    Iteration 1: Prints <strong>1</strong>. <code>i *= 2</code> &rarr; 2. (2 <= 8) True.<br>Iteration 2: Prints <strong>2</strong>. <code>i *= 2</code> &rarr; 4. (4 <= 8) True.<br>Iteration 3: Prints <strong>4</strong>. <code>i *= 2</code> &rarr; 8. (8 <= 8) True.<br>Iteration 4: Prints <strong>8</strong>. <code>i *= 2</code> &rarr; 16. (16 <= 8) False.<br><br>The tricky part is that 8 is printed. After printing 8, the value becomes 16, and only then does the condition fail.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 8 Section -->
+        <div id="q8" class="mcq-section">
+            <div class="mcq-header">
+                <div class="badge-orange">Q8</div>
+                <h2>WHAT IS THE OUTPUT?</h2>
+            </div>
+            
+            <div class="content-grid">
+                <div class="code-container">
+                    <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    int i = 3;
+
+    do {
+        printf("%d ", i--);
+    } while (i &gt; 0);
+
+    return 0;
+}</code></pre>
+                </div>
+                
+                <div class="options-container">
+
+                    <div class="option-item">
+                        <div class="option-letter">A</div>
+                        3 2 1
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">B</div>
+                        2 1 0
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">C</div>
+                        3 2 1 0
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">D</div>
+                        3 2
+                    </div>
+
+                </div>
+            </div>
+            
+            <button class="btn-reveal" onclick="toggleExplanation('exp_q8')">SHOW ANSWER & EXPLANATION</button>
+            
+            <div id="exp_q8" class="explanation-box">
+                <h3 class="exp-answer">CORRECT ANSWER: A) 3 2 1</h3>
+                <div class="exp-text">
+                    Here <code>i--</code> is post-decrement.<br><br>Prints <strong>3</strong> &rarr; i becomes 2.<br>Condition (2 > 0) &rarr; True.<br>Prints <strong>2</strong> &rarr; i becomes 1.<br>Condition (1 > 0) &rarr; True.<br>Prints <strong>1</strong> &rarr; i becomes 0.<br>Condition (0 > 0) &rarr; False.<br><br>Notice that 0 is not printed, because the value becomes 0 only after printing 1.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 9 Section -->
+        <div id="q9" class="mcq-section">
+            <div class="mcq-header">
+                <div class="badge-orange">Q9</div>
+                <h2>WHAT IS THE OUTPUT?</h2>
+            </div>
+            
+            <div class="content-grid">
+                <div class="code-container">
+                    <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    int i = 10;
+
+    do {
+        i -= 3;
+        printf("%d ", i);
+    } while (i &gt; 5);
+
+    return 0;
+}</code></pre>
+                </div>
+                
+                <div class="options-container">
+
+                    <div class="option-item">
+                        <div class="option-letter">A</div>
+                        10 7 4
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">B</div>
+                        7 4
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">C</div>
+                        7 5
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">D</div>
+                        10 7 4 1
+                    </div>
+
+                </div>
+            </div>
+            
+            <button class="btn-reveal" onclick="toggleExplanation('exp_q9')">SHOW ANSWER & EXPLANATION</button>
+            
+            <div id="exp_q9" class="explanation-box">
+                <h3 class="exp-answer">CORRECT ANSWER: B) 7 4</h3>
+                <div class="exp-text">
+                    First iteration: <code>i -= 3</code> &rarr; 7. Prints <strong>7</strong>. Condition: <code>7 > 5</code> (True).<br>Second iteration: <code>i -= 3</code> &rarr; 4. Prints <strong>4</strong>. Condition: <code>4 > 5</code> (False).<br><br>Therefore: 7 4.<br>The key trick is that the subtraction occurs before the printf().
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 10 Section -->
+        <div id="q10" class="mcq-section">
+            <div class="mcq-header">
+                <div class="badge-orange">Q10</div>
+                <h2>WHAT IS THE OUTPUT?</h2>
+            </div>
+            
+            <div class="content-grid">
+                <div class="code-container">
+                    <pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    int i = 1;
+
+    do {
+        printf("%d ", i);
+
+        if (i % 2 == 0)
+            i += 3;
+        else
+            i += 2;
+
+    } while (i &lt; 10);
+
+    return 0;
+}</code></pre>
+                </div>
+                
+                <div class="options-container">
+
+                    <div class="option-item">
+                        <div class="option-letter">A</div>
+                        1 3 5 7 9
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">B</div>
+                        1 3 5 8
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">C</div>
+                        1 3 6 9
+                    </div>
+
+                    <div class="option-item">
+                        <div class="option-letter">D</div>
+                        1 3 5 7
+                    </div>
+
+                </div>
+            </div>
+            
+            <button class="btn-reveal" onclick="toggleExplanation('exp_q10')">SHOW ANSWER & EXPLANATION</button>
+            
+            <div id="exp_q10" class="explanation-box">
+                <h3 class="exp-answer">CORRECT ANSWER: A) 1 3 5 7 9</h3>
+                <div class="exp-text">
+                    Since 1 is odd, <code>i += 2</code> makes <code>i = 3</code> (Prints 1).<br>Since 3 is odd, <code>i += 2</code> makes <code>i = 5</code> (Prints 3).<br>Since 5 is odd, <code>i += 2</code> makes <code>i = 7</code> (Prints 5).<br>Since 7 is odd, <code>i += 2</code> makes <code>i = 9</code> (Prints 7).<br>Since 9 is odd, <code>i += 2</code> makes <code>i = 11</code> (Prints 9).<br><br>Then <code>11 < 10</code> is false.<br>The trap is the <code>if</code> condition: because every printed value is odd, the <code>i += 3</code> branch is never executed.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+    <script>
+        function toggleExplanation(id) {
+            var el = document.getElementById(id);
+            var btn = el.previousElementSibling;
+            if (el.classList.contains('show')) {
+                el.classList.remove('show');
+                btn.innerHTML = "SHOW ANSWER & EXPLANATION";
+            } else {
+                el.classList.add('show');
+                btn.innerHTML = "HIDE ANSWER & EXPLANATION";
+            }
+        }
+    </script>
+</body>
+</html>
