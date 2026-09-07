@@ -391,11 +391,10 @@ int main() {
                     <pre><code class="language-c">#include &lt;stdio.h&gt;
 
 int main() {
-    int i = 0;
+    int i = 1;
 
-    while (i &lt; 5) {
+    while (i &lt; 5 ? i++ : 0) {
         printf("%d ", i);
-        i += 2;
     }
 
     return 0;
@@ -406,22 +405,22 @@ int main() {
 
                     <div class="option-item">
                         <div class="option-letter">A</div>
-                        0 2 4
+                        1 2 3 4
                     </div>
 
                     <div class="option-item">
                         <div class="option-letter">B</div>
-                        0 2 4 6
+                        2 3 4 5
                     </div>
 
                     <div class="option-item">
                         <div class="option-letter">C</div>
-                        1 3 5
+                        2 3 4
                     </div>
 
                     <div class="option-item">
                         <div class="option-letter">D</div>
-                        0 1 2 3 4
+                        No output
                     </div>
 
                 </div>
@@ -430,9 +429,9 @@ int main() {
             <button class="btn-reveal" onclick="toggleExplanation('exp_q2')">SHOW ANSWER & EXPLANATION</button>
             
             <div id="exp_q2" class="explanation-box">
-                <h3 class="exp-answer">CORRECT ANSWER: A) 0 2 4</h3>
+                <h3 class="exp-answer">CORRECT ANSWER: B) 2 3 4 5</h3>
                 <div class="exp-text">
-                    The loop condition is: <code>i < 5</code><br><br>Iteration 1: 0 < 5 (True) &rarr; Prints 0, i becomes 2.<br>Iteration 2: 2 < 5 (True) &rarr; Prints 2, i becomes 4.<br>Iteration 3: 4 < 5 (True) &rarr; Prints 4, i becomes 6.<br>Iteration 4: 6 < 5 (False).<br><br>The common mistake is to include 6, but 6 is never printed because the condition fails before the fourth iteration.
+                    The condition: <br><code>i < 5 ? i++ : 0</code><br><br>For i = 1:<br><code>1 < 5</code> &rarr; true<br><code>i++</code> returns 1<br><code>i</code> becomes 2<br><br>Since returned value 1 is true, the body executes and prints <strong>2</strong>.<br>Then:<br><code>i = 2</code> &rarr; returns 2 &rarr; <code>i</code> becomes 3 &rarr; prints <strong>3</strong><br><code>i = 3</code> &rarr; returns 3 &rarr; <code>i</code> becomes 4 &rarr; prints <strong>4</strong><br><code>i = 4</code> &rarr; returns 4 &rarr; <code>i</code> becomes 5 &rarr; prints <strong>5</strong><br><br>So the actual output is: <strong>2 3 4 5</strong><br><br>At <code>i = 5</code>: <code>i < 5</code> is false, so the expression after <code>:</code> executes: <code>0</code>, which stops the loop.
                 </div>
             </div>
         </div>
@@ -634,12 +633,12 @@ int main() {
                     <pre><code class="language-c">#include &lt;stdio.h&gt;
 
 int main() {
-    int i = 5;
+    double x = 1.0;
 
     do {
-        printf("%d ", i);
-        i++;
-    } while (i &lt; 5);
+        printf("%.2lf ", x);
+        x += 0.25;
+    } while (x &lt;= 2.0)
 
     return 0;
 }</code></pre>
@@ -649,22 +648,22 @@ int main() {
 
                     <div class="option-item">
                         <div class="option-letter">A</div>
-                        No output
+                        1.00 1.25 1.50 1.75 2.00
                     </div>
 
                     <div class="option-item">
                         <div class="option-letter">B</div>
-                        5
+                        1.00 1.25 1.50 1.75
                     </div>
 
                     <div class="option-item">
                         <div class="option-letter">C</div>
-                        5 6
+                        Compilation error
                     </div>
 
                     <div class="option-item">
                         <div class="option-letter">D</div>
-                        4 5
+                        Infinite loop
                     </div>
 
                 </div>
@@ -673,9 +672,12 @@ int main() {
             <button class="btn-reveal" onclick="toggleExplanation('exp_q6')">SHOW ANSWER & EXPLANATION</button>
             
             <div id="exp_q6" class="explanation-box">
-                <h3 class="exp-answer">CORRECT ANSWER: B) 5</h3>
+                <h3 class="exp-answer">CORRECT ANSWER: C) Compilation error</h3>
                 <div class="exp-text">
-                    The most important property of a <code>do-while</code> loop is that its body executes at least once.<br><br>Initially: <code>i = 5</code>.<br>The body executes first: Prints <strong>5</strong>. Then <code>i++</code> makes <code>i = 6</code>.<br>Now the condition is checked: <code>6 < 5</code> which is false.<br><br>Therefore, 5 is printed.
+                    The problem is the missing semicolon after the <code>while</code> condition.<br>The program contains:<br><br><code>} while (x <= 2.0)</code><br><br>A <code>do-while</code> statement must end with:<br><br><code>} while (condition);</code><br><br>Therefore, the correct code is:<br><br><pre><code class="language-c">do {
+    printf("%.2lf ", x);
+    x += 0.25;
+} while (x <= 2.0);</code></pre><br><br>The missing <code>;</code> produces a compiler/syntax error.
                 </div>
             </div>
         </div>
